@@ -15,11 +15,18 @@ weight,height,glasses]).T
 df2.columns = ['ID','Name','W','H','Gl']
 print(df2)
 
-df0 = df1.merge(df2,how='inner')
-df00 = df1.merge(df2,how='outer')
+df0 = pd.merge(df1,df2,on=['Name','ID'],how='inner')
 print(df0)
-print(df00)
+print(df0.sort_values(by=['Name']))
+print(df0[df0['Gl']])
 
-df_wiek = df00.where((df00['Age']>=20) & (df00['Age']<=30))
+df_wiek = df0[(df0['Age']<30)&(df0['Age']>20)]
 print(df_wiek)
 
+df0['bmi'] = (df0['W']/df0['H']**2*10000).astype(float)
+print(df0)
+print(df0['Age'].mean().round(2))
+print(df0[df0['Gl']]['Age'].mean().round(2))
+print(df0[df0['Gl']==False]['Age'].mean().round(2))
+print(df0.groupby(['Gl'])['Age'].mean().astype(float).round(2))
+print(df0.groupby(['Gl'])['bmi'].mean().astype(float).round(2))
